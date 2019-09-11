@@ -29,10 +29,28 @@ What before was `a` is now `Bool`.
 > Exercise 0.2 Define the `Eq` instance for tuples `(a, b)`. In case you need more than one
 prerequisite in the declaration, the syntax is: `instance (Prereq1, Prereq2), ...) => Eq (a, b)`
 
+This is my solution, but I'm not really sure it's correct, I also get a "Pattern match is
+redundant" warning that puzzles me:
+
 ```Haskell
-instance Eq ((a, b), (c, d)) where
-  (==) a c && (==) b d = True
-  _                    = False
+instance (Num a, Num b) => Equ (a, b) where
+  a == b = True
+  _ == _ = False
 ```
 
-https://repl.it/@lazywithclass/MagnificentRespectfulKilobyte
+[repl.it](https://repl.it/@lazywithclass/MagnificentRespectfulKilobyte)
+
+```Haskell
+class Container c where
+  empty  :: c a
+  insert :: a -> c a -> c a
+```
+
+> Exercise 0.5 Write the List instance for the `Container` type class
+
+```Haskell
+instance Container [] where
+  empty       = []
+  insert x xs = xs:x
+  -- or also insert = (:)
+```
