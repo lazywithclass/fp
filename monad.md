@@ -28,7 +28,7 @@ Relabeling tree leaves, left to right, like so
 relabel :: Tree a -> Int -> (Tree (Int, a), Int)    -- 1)
 relabel (Leaf x)   i = (Leaf (i, x), i+1)           -- 2)
 relabel (Node l r) i = let (l', i1) = relabel l i   -- 3)
-                           (r', i2) = relabel r i1  -- 3)
+                           (r', i2) = relabel r i1  -- 4)
                        in  (Node l' r', i2)
 ```
 
@@ -40,4 +40,44 @@ the goal, which is to understand why this example is useful to understand when m
 and returns a `Tree` which now has a tuple consisting of an `Int` and an `a` instead of just an `a`
 (exactly what we wanted)
 
-2) pattern matching on the `Tree`, if we've found a `Leaf` then -- I dont understand what's happening 
+2) pattern matching on the `Tree`, if we've found a `Leaf` then I create one the way I want it, so
+the new label, `i`, and I return it in a tuple along with the next label to be used
+The data structure of `Tree` is `data Tree a = Leaf a | Node (Tree a) (Tree a)`
+
+3 - 4) in the case of a `Node`, so we have left and right to check, we use destructuring and recurse
+on the rest of the data structure
+
+### Working towards a cleaner solution
+
+Dealing with the index is error prone, so we isolate it in a new type
+
+```Haskell
+type WithCounter a = Int -> (a, Int)
+```
+
+so `relabel`'s type becomes `Tree a -> WithCounter (Tree a)`, (`Tree a -> Int -> ((Tree a), Int)` is how it
+would look after the subsitution I suppose).
+
+Next, isolate `let` expression nesting
+
+```Haskell
+next :: WithCounter a -> (a -> WithCounte b) -> WithCounter b
+f `next` f = \i -> let (r, i') = f i in g r i'
+```
+
+The second thing is returning a value with the counter unchanged
+
+```Haskell
+pure :: a -> WithCounter a
+pure x = \i -> (x, i)
+```
+
+so that `relabel` becomes
+
+```Haskell
+relabel :: Tree a -> WithCounter a
+relabel (Leaf x)   i = (Leaf (i, x), i+1)
+relabel (Node l r) i = let (l', i1) = relabel l i
+                           (r', i2) = relabel r i1
+                       in  (Node l' r', i2)
+```
