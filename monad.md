@@ -76,8 +76,40 @@ so that `relabel` becomes
 
 ```Haskell
 relabel :: Tree a -> WithCounter a
-relabel (Leaf x)   i = (Leaf (i, x), i+1)
-relabel (Node l r) i = let (l', i1) = relabel l i
-                           (r', i2) = relabel r i1
-                       in  (Node l' r', i2)
+relabel (Leaf x)   i = \i -> (Leaf (i, x), i + 1)
+relabel (Node l r) i = relabel l `next` \l' ->
+                       relabel r `next` \r' ->
+                       pure (Node l' r')
 ```
+
+We can maintain a state with a type alias like
+
+```Haskell
+type state s a = s -> (a, s)
+```
+
+where `s` is the state and `a` the type variable.
+
+> Exercise 1.1 Rewrite the definitions of `pure` and `next` to work with an arbitrary 
+stateful computation `State s a`. Hint: you only need to change the type signatures.
+
+```Haskell
+pure :: a -> State s a
+pure x = \i -> (x, i)
+
+next :: State s a -> (a -> State s b) -> State s b
+f `next` g = \i -> let (r, i') = f i in g r i'
+```
+
+> Exercise 1.2 Write a function (`++`) that takes two lists and return its concatenation.
+That is, given two lists `l1` and `l2`, `l1 ++ l2` contains the elements of `l1` followed
+by the elements of `l2`
+
+https://repl.it/@lazywithclass/book-of-monads-ex-12
+
+```Haskell
+(++) :: [a] -> [a] -> [a]
+[] ++ ys = ys
+(x:xs) ++ ys = x : xs ++ ys
+```
+
