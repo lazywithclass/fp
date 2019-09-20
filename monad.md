@@ -140,7 +140,7 @@ A list is a box that supports three operations:
 
 There is an analogy with the `Maybe` type, it is possible to:
 
- * modify it 
+ * `map`ping over it to make changes
 ```Haskell
 map :: (a -> b) -> Maybe a -> Maybe b
 map f Nothing  = Nothing
@@ -150,5 +150,11 @@ map f (Just x) = Just (f x)
 ```Haskell
 singleton :: a -> Maybe a
 singleton = Just
+```
+ * flattening boxes inside other boxes
+```Haskell
+flatten :: Maybe (Maybe a) -> Maybe a
+flatten (Just (Just x)) = Just x
+flatten _               = Nothing
 ```
 
