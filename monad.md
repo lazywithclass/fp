@@ -113,3 +113,42 @@ https://repl.it/@lazywithclass/book-of-monads-ex-12
 (x:xs) ++ ys = x : xs ++ ys
 ```
 
+> Exercise 1.3 Do you remember how `map` is defined? Try it out!
+
+```Haskell
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+```
+
+Getting closer to the definition...
+
+```Haskell
+singleton :: a -> [a]
+singleton x = [x]
+
+concat :: [[a]] -> [a]
+concat []     = []
+concat (x:xs) = x ++ concat xs
+```
+
+A list is a box that supports three operations:
+
+ * `map`ping a funciton over all the elements contained in it
+ * creating a box from a single element
+ * flattening nested boxes of boxes into a single layer
+
+There is an analogy with the `Maybe` type, it is possible to:
+
+ * modify it 
+```Haskell
+map :: (a -> b) -> Maybe a -> Maybe b
+map f Nothing  = Nothing
+map f (Just x) = Just (f x)
+```
+ * create a `Maybe` from a single element
+```Haskell
+singleton :: a -> Maybe a
+singleton = Just
+```
+
