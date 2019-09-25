@@ -140,7 +140,7 @@ A list is a box that supports three operations:
 
 There is an analogy with the `Maybe` type, it is possible to:
 
- * `map`ping over it to make changes
+ * `map` over it to make changes
 ```Haskell
 map :: (a -> b) -> Maybe a -> Maybe b
 map f Nothing  = Nothing
@@ -151,10 +151,15 @@ map f (Just x) = Just (f x)
 singleton :: a -> Maybe a
 singleton = Just
 ```
- * flattening boxes inside other boxes
+ * flatten boxes inside other boxes
 ```Haskell
 flatten :: Maybe (Maybe a) -> Maybe a
 flatten (Just (Just x)) = Just x
 flatten _               = Nothing
 ```
 
+`State s a`, `[a]`, and `Maybe a` all share a common abstraction, which is the monad, which is defined by three functions:
+
+ * singleton - builds a monadic value from a pure one
+ * sequence  - transforms the contents
+ * flatten   - unpacks layers of boxes
