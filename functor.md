@@ -24,8 +24,8 @@ addOne :: Int -> Int
 addOne x = x + 1 
 ```
 
-could be applied to arrays or `Maybe`s by lifting it like so `fmap (addone) [1]`. Of course that does not work for
-`fmap (addOne) 1`, because `1` is not contained in a "box".
+could be applied to arrays or `Maybe`s by lifting it like so `fmap (addone) [1]`, `fmap (Just) 1`. Of course that 
+does not work for `fmap (addOne) 1`, because `1` is not contained in a "box".
 
 https://repl.it/@lazywithclass/book-of-monads-functor
 
