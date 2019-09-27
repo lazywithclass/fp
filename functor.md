@@ -1,6 +1,6 @@
 ## Functor
 
-(explanations took from Book Of Monads)
+(explanations took from [Book Of Monads](https://www.amazon.com/Book-Monads-practice-applied-problems-ebook/dp/B07JNZHYLT))
 
 Functors encompass the simplest notion of a "magic box", that we can only inspect by means of function but never
 unwrap or generate anew.
