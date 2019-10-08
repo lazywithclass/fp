@@ -60,21 +60,40 @@ main = print (fmap mysum3 (Just 1) `ap` (Just 1) `ap` (Just 1))
 https://repl.it/@lazywithclass/book-of-monads-lifting
 
 
-Why does this work? (legit question I don't know at the time I am writing this words)
+Why does this work? (legit question, I don't know at the time I am writing this words)
 
 I'll try reasoning using types, so we have
 
 ```Haskell
-fmap mysum3 (Just 1) `ap` (Just 1)
+mysum :: Int -> Int -> Int
+mysum x y = x + y
+
+fmap mysum (Just 1) `ap` (Just 1)
 ```
 
 which has these types if we decompose it in smaller pieces (I'm using `:type` to help me)
 
 ```Haskell
--- fmap mysum3 has type
-fmap mysum3 :: Functor f => f Int -> f (Int -> Int -> Int)
+-- fmap mysum has type
+fmap mysum :: Functor f => f Int -> f (Int -> Int)
 ```
 
 so it's giving me something that accepts an `Int` wrapped in a `Functor` and gives back a function
 that takes two `Int`s and returns an `Int`, wrapped in a `Functor`; so basically all it does is wrapping `mysum3`
 in `Functor`s.
+
+```Haskell
+-- fmap mysum (Just 1) has type
+fmap mysum (Just 1) :: Maybe (Int -> Int)
+```
+
+So at this point we need to use `ap`, which has type `ap :: Monad m => m (b -> c) -> m b -> m c`, which means it accepts
+a function wrapped in a Monad `m`, and returns a function that can translate a `b` into a `c`, keeping the monadic context.
+
+```Haskell
+-- fmap mysum (Just 41) `ap` has type
+(fmap mysum (Just 41) `ap`) :: Maybe Int -> Maybe Int
+```
+
+which returns `Maybe Int -> Maybe Int` and that is exactly what we want, the capability to accept yet another parameter
+wrapped in a monadic context, so that we can continue piping `ap` for infinite lifting.
