@@ -97,3 +97,5 @@ a function wrapped in a Monad `m`, and returns a function that can translate a `
 
 which returns `Maybe Int -> Maybe Int` and that is exactly what we want, the capability to accept yet another parameter
 wrapped in a monadic context, so that we can continue piping `ap` for infinite lifting.
+
+I'm told `ap` is an applicative functor, or simply applicative.
