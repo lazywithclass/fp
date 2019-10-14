@@ -2,7 +2,7 @@
 
 (explanations and exercises took from [Book Of Monads](https://www.amazon.com/Book-Monads-practice-applied-problems-ebook/dp/B07JNZHYLT))
 
-TODO What is an applicative?
+An improvement upon Functor, an Applicative deals with a value *and* a function wrapped in a context.
 
 ```Haskell
 class Functor f => Applicative f where
@@ -32,3 +32,16 @@ main = print (fmap' (\x -> x + 1) (Just 41))
 ```
 
 https://repl.it/@lazywithclass/book-of-monads-exercise-32
+
+> `Applicative` pushes `Functor` aside. "Big boys can use functions with any number of arguments," it says. "Armed `<$>` and `<*>`, I can take any function that expects any number of unwrapped values. Then I pass it all wrapped values, and I get a wrapped value out! AHAHAHAHAH!"
+
+```Haskell
+> (+) <$> (Just 5)
+Just (+5)
+> Just (+5) <*> (Just 3)
+Just 8
+```
+
+Where `<$>` is `fmap`.
+
+Source: http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html#applicatives
