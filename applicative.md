@@ -28,9 +28,7 @@ ap mf x = do
 fmap' :: Monad f => (a -> b) -> f a -> f b
 fmap' f ma = pure f `ap` ma
 
-main = print 42
+main = print (fmap' (\x -> x + 1) (Just 41))
 ```
-
-TODO print something that makes sense, to show that the code it's actually working
 
 https://repl.it/@lazywithclass/book-of-monads-exercise-32
