@@ -30,3 +30,27 @@ does not work for `fmap (addOne) 1`, because `1` is not contained in a "box".
 https://repl.it/@lazywithclass/book-of-monads-functor
 
 Every monad is also a functor, so by using monads, we also gain the capabilities of functors.
+
+Let's see it with some examples (credit: http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
+
+> A Functor is any data type that defines how fmap applies to it.
+
+```Haskell
+fmap (+3) (Just 2) -- Just 5
+
+-- or
+
+instance Functor Maybe where
+  fmap func (Just val) = Just (func val)
+  fmap func Nothing = Nothing
+
+-- or (function composition)
+
+instance Functor ((->) r) where
+  fmap f g = f . g
+
+-- or (lists are functors!)
+
+instance Functor [] where
+  fmap = map
+```
