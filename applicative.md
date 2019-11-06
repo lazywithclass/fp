@@ -45,3 +45,11 @@ Just 8
 Where `<$>` is `fmap`.
 
 Source: http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html#applicatives
+
+Whenever we want to lift a pure (non monadic) function in a monadic context we "lift", so this applicative style has the form
+
+```Haskell
+fmap f x1 `ap` x2 `ap1` ... `ap` xN
+-- or by using Haskell strange symbols
+f <$> x1 <*> x2 <*> ... <*> nN
+```
