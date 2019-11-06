@@ -6,4 +6,4 @@
 
 ### `<*>`
 
-`ap`
+`ap` - the applicative application function
